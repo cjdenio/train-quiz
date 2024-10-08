@@ -1,0 +1,29 @@
+---
+import Guesser from "../components/Guesser.svelte";
+import screenshot from "../screenshot.png";
+---
+
+<html>
+  <head>
+    <link rel="preload" as="image" href={screenshot.src} />
+    <title>The Boston Train Quiz</title>
+  </head>
+  <body>
+    <Guesser client:load />
+
+    <p
+      class="fixed bottom-0 left-0 text-gray-400 transition-transform translate-y-3 hover:translate-y-0 hover:translate-x-2 cursor-default"
+    >
+      <a href="https://calebden.io" class="underline" target="_blank">caleb</a> made
+      this
+    </p>
+
+    <p class="fixed bottom-1 right-2 text-gray-400">
+      Data provided by the <a
+        href="https://www.mbta.com/developers/gtfs"
+        class="underline"
+        target="_blank">MBTA</a
+      >
+    </p>
+  </body>
+</html>

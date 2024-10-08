@@ -1,0 +1,28 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "jsr:@zip-js/zip-js": "jsr:@zip-js/zip-js@2.7.52",
+      "npm:csv-parse": "npm:csv-parse@5.5.6"
+    },
+    "jsr": {
+      "@zip-js/zip-js@2.7.52": {
+        "integrity": "c8d9fd23b1965fdf58071e886b3b8dbd32a68f780ccb60cb256cfc41b4423e32"
+      }
+    },
+    "npm": {
+      "csv-parse@5.5.6": {
+        "integrity": "sha512-uNpm30m/AGSkLxxy7d9yRXpJQFrZzVWLFBkS+6ngPcZkw/5k3L/jjFuj7tVnEpRn+QgmiXr21nDlhCiUK4ij2A==",
+        "dependencies": {}
+      }
+    }
+  },
+  "remote": {},
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:astro@^4.15.11"
+      ]
+    }
+  }
+}
