@@ -21,7 +21,13 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:astro@^4.15.11"
+        "npm:@astrojs/svelte@^5.7.1",
+        "npm:@astrojs/tailwind@^5.1.1",
+        "npm:astro@^4.15.11",
+        "npm:gsap@^3.12.5",
+        "npm:svelte@^4.2.19",
+        "npm:tailwindcss@^3.4.13",
+        "npm:typescript@^5.6.2"
       ]
     }
   }

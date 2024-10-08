@@ -1,5 +1,5 @@
 <script>
-  import agency from "../../cities/boston.json"
+  import agency from "../agency"
 
   export let name
   export let compact = false

@@ -1,6 +1,7 @@
 import { TextWriter } from "jsr:@zip-js/zip-js";
 import { ZipReader } from "jsr:@zip-js/zip-js";
 import { parse } from "npm:csv-parse/sync";
+import { parse as parseStream } from "npm:csv-parse";
 
 function indexRecords(records, key) {
   const result = {};
@@ -12,46 +13,66 @@ function indexRecords(records, key) {
   return result;
 }
 
+async function streamRecords(entry, filter) {
+  const records = [];
+
+  const parser = parseStream({ columns: true });
+
+  parser.on("readable", () => {
+    let record;
+    while ((record = parser.read()) !== null) {
+      // console.log(`got record ${record.trip_id}`);
+
+      if (filter(record)) records.push(record);
+    }
+  });
+
+  await entry.getData(
+    new WritableStream({
+      write(chunk) {
+        parser.write(chunk);
+      },
+      close() {
+        parser.end();
+      },
+    })
+  );
+
+  return records;
+}
+
 const reader = new ZipReader((await Deno.open(Deno.args[0])).readable);
 
 const files = await reader.getEntries();
 
-const wantedFiles = [
-  "routes",
-  "trips",
-  "stops",
-  "stop_times",
-  "calendar",
-] as const;
+const wantedFiles = ["routes", "trips", "stops", "calendar"];
 
-const entries: Partial<Record<(typeof wantedFiles)[number], any[]>> = {};
+const entries = {};
 
 console.log("reading files");
 
 await Promise.all(
   files
     .filter((f) => {
-      //@ts-ignore
       return wantedFiles.includes(f.filename.replace(".txt", ""));
     })
     .map(async (f) => {
       const writer = new TextWriter();
-      entries[f.filename.replace(".txt", "") as (typeof wantedFiles)[number]] =
-        parse(await f.getData!(writer), { columns: true });
+      entries[f.filename.replace(".txt", "")] = parse(await f.getData(writer), {
+        columns: true,
+      });
     })
 );
 
-reader.close();
-
 console.log(`Indexing ${entries.stops?.length} stops...`);
 
-function actualStop(stop_id: string): string {
+function actualStop(stop_id) {
   return indexedStops[stop_id]?.parent_station || stop_id;
 }
 
 const indexedStops = indexRecords(entries.stops, "stop_id");
 
-const metroRoutes = entries.routes!.filter(
+const metroRoutes = entries.routes.filter(
   (r) => r.route_type == 1 || r.route_type == 0
 );
 
@@ -59,26 +80,31 @@ const metroRouteIds = metroRoutes.map((r) => r.route_id);
 
 console.log(`Indexing trips...`);
 
-const trips = entries.trips!.filter(
+const trips = entries.trips.filter(
   (t) => t.service_id == "canonical" && metroRouteIds.includes(t.route_id)
 );
 const indexedTrips = indexRecords(trips, "trip_id");
 
-console.log("sorting stop times");
+console.log("fetching stop times");
 
-const stop_times = entries
-  .stop_times!.filter((s) => s.trip_id in indexedTrips)
-  .sort((a, b) => {
-    if (a.trip_id < b.trip_id) {
-      return -1;
-    } else if (a.trip_id > b.trip_id) {
-      return 1;
-    } else {
-      return a.stop_sequence - b.stop_sequence;
-    }
-  });
+entries.stop_times = await streamRecords(
+  files.find((f) => f.filename == "stop_times.txt"),
+  (s) => s.trip_id in indexedTrips
+);
 
-const edges: Record<string, any> = {};
+reader.close();
+
+const stop_times = entries.stop_times.sort((a, b) => {
+  if (a.trip_id < b.trip_id) {
+    return -1;
+  } else if (a.trip_id > b.trip_id) {
+    return 1;
+  } else {
+    return a.stop_sequence - b.stop_sequence;
+  }
+});
+
+const edges = {};
 
 console.log("calculating edges...");
 
@@ -125,11 +151,5 @@ const output = {
     slug: "boston",
   },
 };
-
-console.log(
-  entries.calendar?.sort(
-    (a, b) => parseInt(b.end_date) - parseInt(a.end_date)
-  )[0]
-);
 
 await Deno.writeTextFile("cities/boston.json", JSON.stringify(output));
