@@ -132,6 +132,16 @@ for (let i = 0; i < stop_times.length - 1; i++) {
   }
 }
 
+function routesForStation(station_id) {
+  return [
+    ...new Set(
+      Object.values(edges)
+        .filter((e) => e.a == station_id || e.b == station_id)
+        .flatMap((e) => [...e.route])
+    ),
+  ];
+}
+
 const stations = [
   ...new Set(
     Object.values(edges)
@@ -141,7 +151,7 @@ const stations = [
 ];
 const output = {
   stations: indexRecords(
-    stations.map((s) => indexedStops[s]),
+    stations.map((s) => ({ ...indexedStops[s], routes: routesForStation(s) })),
     "stop_id"
   ),
   edges: Object.values(edges).map((e) => ({ ...e, route: [...e.route] })),
@@ -153,3 +163,5 @@ const output = {
 };
 
 await Deno.writeTextFile("cities/boston.json", JSON.stringify(output));
+
+console.log("done");

@@ -1,6 +1,6 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
-  import agency, { linesForStation, minStops, randomStationPair, stepsValidForStationPair } from "../agency"
+  import agency, { minStops, randomStationPair, stepsValidForStationPair } from "../agency"
   import MbtaLine from "./MbtaLine.svelte";
   import RouteBuilder from "./RouteBuilder.svelte";
   import gsap from "gsap";
@@ -76,7 +76,7 @@
     <h3 class="text-3xl">
       <span class="inline-flex items-center justify-center gap-2">
         <span class="font-bold">{agency.stations[from].stop_name}</span>
-        {#each linesForStation(from) as line}
+        {#each agency.stations[from].routes as line}
           <MbtaLine name={line} compact />
         {/each}
         to
@@ -84,7 +84,7 @@
       <br>
       <span class="inline-flex items-center justify-center gap-2">
         <span class="font-bold">{agency.stations[to].stop_name}</span>
-        {#each linesForStation(to) as line}
+        {#each agency.stations[to].routes as line}
           <MbtaLine name={line} compact />
         {/each}
       </span>

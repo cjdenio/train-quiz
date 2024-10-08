@@ -53,7 +53,7 @@
     <div class="mb-5 max-w-96">
       <h1 class="font-black text-5xl">How It Works</h1>
 
-      <p class="mb-2">We'll show you a pair of T stations in Boston: an origin and a destination.</p>
+      <p class="mb-2">You'll see a pair of T stations in Boston: an origin and a destination.</p>
 
       <img src={screenshot.src} class="w-full border rounded-lg mb-2" />
 

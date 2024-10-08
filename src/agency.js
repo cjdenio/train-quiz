@@ -4,22 +4,23 @@ const agency = {
   ..._agency,
   // Convert `route` arrays to `Set`s
   edges: _agency.edges.map((e) => ({ ...e, route: new Set(e.route) })),
+  stations: Object.fromEntries(
+    Object.entries(_agency.stations).map(([k, s]) => [
+      k,
+      {
+        ...s,
+        routes: new Set(s.routes),
+      },
+    ])
+  ),
 };
-
-export function linesForStation(station_id) {
-  return new Set(
-    agency.edges
-      .filter((e) => e.a == station_id || e.b == station_id)
-      .flatMap((e) => [...e.route])
-  );
-}
 
 export function randomStationPair() {
   const keys = Object.keys(agency.stations);
   // select a random source station
   const a = keys[Math.floor(Math.random() * keys.length)];
 
-  const aLines = linesForStation(a);
+  const aLines = agency.stations[a].routes;
 
   const stationsOnSameLine = agency.edges
     .filter((e) => !aLines.isDisjointFrom(e.route))
@@ -45,8 +46,8 @@ function stationNeighbors(station) {
 
 // caleb's patented graph traversal algorithm (tm)
 function routeGoesBetweenStations(route, stationA, stationB) {
-  let currentNodes = [stationA];
-  let visited = [];
+  const currentNodes = [stationA];
+  const visited = [];
   let stops = 0;
 
   let possible = false;
