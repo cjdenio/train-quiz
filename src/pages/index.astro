@@ -24,6 +24,10 @@ import socialImage from "../social-image.jpg";
     <meta property="og:type" content="website" />
     <meta property="og:image" content={socialImage.src} />
     <meta property="og:url" content="https://trains.clb.li" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={socialImage.src} />
+    <meta name="twitter:title" content="The Boston Train Quiz" />
   </head>
   <body>
     <Guesser client:load />
