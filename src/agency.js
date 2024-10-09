@@ -84,7 +84,7 @@ export function stepsValidForStationPair(steps, stationA, stationB) {
   if (steps[steps.length - 1].station != stationB)
     return [
       false,
-      `Route doesn't end at ${agency.stations[stationB].stop_name}.`,
+      [`Route doesn't end at ${agency.stations[stationB].stop_name}.`],
     ];
 
   let stops = 0;
@@ -99,7 +99,13 @@ export function stepsValidForStationPair(steps, stationA, stationB) {
     if (!possible) {
       return [
         false,
-        `${steps[i].line} doesn't serve ${agency.stations[err].stop_name}`,
+        new Array(steps.length).fill(
+          `${agency.routes[steps[i].line].route_long_name} doesn't serve ${
+            agency.stations[err].stop_name
+          }`,
+          i,
+          i + 1
+        ),
       ];
     }
     stops += _stops;

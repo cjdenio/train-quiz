@@ -1,6 +1,7 @@
 <script>
   import Game from "./Game.svelte";
   import screenshot from "../screenshot.png"
+  import Route from "./Route.svelte";
 
   let page = "welcome"
   let score = 0
@@ -28,6 +29,14 @@
       {/if}
 
       <div class="flex flex-col items-center justify-center">
+        <div class="mx-auto">
+          <Route origin="Sullivan Square" steps={[
+            { line: "Orange", station: "place-north" },
+            { line: "Green-D", station: "place-pktrm" },
+            { line: "Red", station: "place-knncl" },
+          ]} />
+        </div>
+
         <div class="inline-block relative text-left mb-5">
           <h1 class="font-black text-5xl">The Train Quiz</h1>
           <div class="max-w-72">

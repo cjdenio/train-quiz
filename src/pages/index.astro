@@ -25,8 +25,12 @@ import screenshot from "../screenshot.png";
     <p
       class="fixed bottom-0 left-0 text-gray-400 transition-transform translate-y-3 hover:translate-y-0 hover:translate-x-2 cursor-default"
     >
-      <a href="https://calebden.io" class="underline" target="_blank">caleb</a> made
-      this
+      <a href="https://calebden.io" class="underline" target="_blank">Caleb</a> made
+      this &middot; and it's on <a
+        href="https://github.com/cjdenio/train-quiz"
+        class="underline"
+        target="_blank">GitHub</a
+      >
     </p>
 
     <p class="fixed bottom-1 right-2 text-gray-400">
@@ -36,5 +40,13 @@ import screenshot from "../screenshot.png";
         target="_blank">MBTA</a
       >
     </p>
+
+    <script>
+      import Honeybadger from "@honeybadger-io/js";
+      Honeybadger.configure({
+        apiKey: "hbp_kMocExYws1yKlIKXs0TkQzbAGmDpqJ2kz24F",
+        environment: import.meta.env.MODE,
+      });
+    </script>
   </body>
 </html>

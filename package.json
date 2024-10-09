@@ -13,6 +13,7 @@
   "dependencies": {
     "@astrojs/svelte": "^5.7.1",
     "@astrojs/tailwind": "^5.1.1",
+    "@honeybadger-io/js": "^6.10.0",
     "astro": "^4.15.11",
     "gsap": "^3.12.5",
     "svelte": "^4.2.19",
