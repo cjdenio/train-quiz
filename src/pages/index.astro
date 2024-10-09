@@ -1,6 +1,7 @@
 ---
 import Guesser from "../components/Guesser.svelte";
 import screenshot from "../screenshot.png";
+import socialImage from "../social-image.jpg";
 ---
 
 <html>
@@ -18,6 +19,11 @@ import screenshot from "../screenshot.png";
         />
       )
     }
+
+    <meta property="og:title" content="The Boston Train Quiz" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={socialImage.src} />
+    <meta property="og:url" content="https://trains.clb.li" />
   </head>
   <body>
     <Guesser client:load />
