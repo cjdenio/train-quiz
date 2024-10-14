@@ -45,6 +45,7 @@
     disabled = true
 
     if(route[route.length - 1].station != to) {
+      disabled = false
       return alert(`Oops, your route doesn't end at ${agency.stations[to].stop_name}!`)
     }
     
