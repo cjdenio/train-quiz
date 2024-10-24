@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import Route from "./Route.svelte";
+  import { sortBy } from "lodash-es/collection"
 
   export let route = []
   export let errors = []
@@ -55,7 +56,7 @@
       <select bind:value={selectedStation}>
         <option value="">Select a station...</option>
 
-        {#each Object.values(stations) as station (station.stop_id)}
+        {#each sortBy(Object.values(stations), "stop_name") as station (station.stop_id)}
           <option value={station.stop_id}>{station.stop_name}</option>
         {/each}
       </select>
