@@ -8,7 +8,7 @@ await importGtfs("Boston", {
 });
 
 // await importGtfs("Chicago", {
-//   allowedRouteTypes: ["0", "1"],
+//   allowedRouteTypes: [SUBWAY],
 //   sourceFeed: "gtfs/cta.zip",
 //   outputFile: "cities/chicago.json",
 //   processStationNames: (name) =>
