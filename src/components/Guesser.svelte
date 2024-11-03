@@ -3,11 +3,13 @@
   import screenshot from "../screenshot.png"
   import Route from "./Route.svelte";
 
+  import { gameOptions } from "../store"
+
   let page = "welcome"
   let score = 0
 </script>
 
-<div class="flex flex-col h-screen justify-center items-center">
+<div class="flex flex-col min-h-screen justify-center items-center py-5">
   {#if page == "welcome" || page == "done"}
     <div class="grid gap-20" class:grid-cols-2={page == "done"}>
       {#if page == "done" }
@@ -76,6 +78,13 @@
       on:click={() => page = "play"}
       >Start</button
     >
+
+    <details class="mt-5">
+      <summary class="cursor-pointer text-center">Options</summary>
+
+      <input type="checkbox" id="showStationLines" checked={$gameOptions.showStationLines ?? true} on:input={e => gameOptions.update(opt => ({...opt, showStationLines: e.target.checked}))}>
+      <label for="showStationLines">Show available lines for station</label>
+    </details>
   {:else if page == "play"}
     <Game on:done={e => {score = e.detail; page = "done"}} />
   {:else if page == "done"}

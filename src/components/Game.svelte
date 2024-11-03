@@ -5,6 +5,8 @@
   import RouteBuilder from "./RouteBuilder.svelte";
   import gsap from "gsap";
 
+  import { gameOptions } from "../store"
+
   const dispatch = createEventDispatcher()
 
   const questionCount = 10
@@ -99,17 +101,21 @@
     <h3 class="text-3xl inline-block" bind:this={stationsElement}>
       <span class="inline-flex items-center justify-center gap-2">
         <span class="font-bold">{agency.stations[from].stop_name}</span>
-        {#each agency.stations[from].routes as line}
-          <MbtaLine name={line} compact />
-        {/each}
+        {#if $gameOptions.showStationLines}
+          {#each agency.stations[from].routes as line}
+            <MbtaLine name={line} compact />
+          {/each}
+        {/if}
         to
       </span>
       <br>
       <span class="inline-flex items-center justify-center gap-2">
         <span class="font-bold">{agency.stations[to].stop_name}</span>
-        {#each agency.stations[to].routes as line}
-          <MbtaLine name={line} compact />
-        {/each}
+        {#if $gameOptions.showStationLines}
+          {#each agency.stations[to].routes as line}
+            <MbtaLine name={line} compact />
+          {/each}
+        {/if}
       </span>
     </h3>
   {:else}
