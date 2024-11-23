@@ -32,7 +32,7 @@
 
     await tick()
 
-    gsap.from(stationsElement, { opacity: 0, scale: 0.9 })
+    gsap.fromTo(stationsElement, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1 })
   }
 
   onMount(() => {
@@ -87,7 +87,7 @@
   async function addPoints(p) {
     points += p
     pointFlourish.innerText = `+${p}`
-    await gsap.to(pointFlourish, {x: -40, y: -50, rotate: -30, scale: 2, opacity: 0, duration: 1, startAt: {opacity: 1, y: 0, x: 0, scale: 1, rotate: 0}}).then()
+    await gsap.to(pointFlourish, { x: -40, y: -50, rotate: -30, scale: 2, opacity: 0, duration: 1, startAt: { opacity: 1, y: 0, x: 0, scale: 1, rotate: 0 } }).then()
   }
 </script>
 
@@ -132,3 +132,5 @@
     Next
   {/if}
 </button>
+
+<button class="hover:underline text-gray-400 cursor-pointer text-sm mt-2" on:click={() => next()}>Skip</button>
