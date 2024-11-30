@@ -133,4 +133,4 @@
   {/if}
 </button>
 
-<button class="hover:underline text-gray-400 cursor-pointer text-sm mt-2" on:click={() => next()}>Skip</button>
+<button class="hover:underline text-gray-400 cursor-pointer text-sm mt-2" class:invisible={errors.length > 0} on:click={() => next()}>Skip</button>
